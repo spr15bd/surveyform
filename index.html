@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<style>
+  
+	#border {
+		//padding-top:5%;
+		position:flex;
+		text-align:center;
+		background-color:RGB(120,220,255);
+		font-family:tahoma;
+		height:100%;
+		padding-bottom:4%;
+	}
+	
+	#title {
+		font-size:20px;
+		color:white;
+		padding-top:15px;
+		//padding-bottom:5px;
+	}
+	#form-container {
+		background-color:white;
+		display:inline-block;
+		width:70%;
+		//height:80%;
+   
+    	
+}
+ 
+	#top {
+		width:100%;
+	} 
+	#name-label,#email-label,#number-label,#employment-status,#tutor,#topics,#comments
+	{
+		width:40%;
+		
+		float:left;
+		//clear:all;
+	}
+	#name,#email,#number,#dropdown {
+		width:40%;
+		float:right;
+	}
+	#tutor-question,#topic-question {
+		width:40%;
+		float:right;
+	}
+	.tutor,.topics,.footnote,.submit {
+		height:160px;
+		padding-top:5px;
+	}
+	.comments {
+		height:90px;
+		padding-top:5px;
+	}
+	.footnote,.submit {
+		height:40px;
+		padding-top:5px;
+	}
+	
+	textarea {
+		width:40%;
+		float:right;
+	}
+	#submit {
+		float:none;
+		width:150px;
+	}
+	li {
+		list-style-type:none;
+	}
+</style>
+
+<html>
+<head>
+
+<title>Survey Form</title>
+<script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+</head>
+
+<body>
+
+<div id="border">
+<h1 id="title">Maths education survey form</h1>
+
+<div id="form-container">
+	<p id="description">Students, please let us know how we can improve the site.</p>
+<form id="survey-form" action="/submit-form">
+	
+	<label id="name-label">*Name</label><input type="text" id="name" placeholder="Enter your name here" required></input>
+	<label id="email-label">*Email</label><input type="email" id="email" placeholder="Enter your email here" required></input>
+	<label id="number-label">Age</label><input type="number" id="number" pattern="\d+" min="18" max="130" placeholder="Enter your age here"></input>
+	<label id="employment-status">Current employment status</label><select id="dropdown">
+		<option>Unemployed</option>
+		<option>Employed full time</option>
+		<option>Employed part time</option>
+		<option>I have retired</option>
+		</select>
+	<div class="tutor">
+	<label id="tutor">How likely is it that you would employ a tutor?</label>
+		<div id="tutor-question">
+		<li><input type="radio" value="tutor" name="tutor">Not likely</input></li>
+		<li><input type="radio" value="tutor" name="tutor">Possible</input></li>
+		<li><input type="radio" value="tutor" name="tutor">Likely</input></li>
+		<li><input type="radio" value="tutor" name="tutor">Highly likely</input></li>
+		</div>
+	</div>
+	<div class="topics">
+	<label id="topics">Topics which you would like to see included</label>
+		<div id="topic-question">
+		<li><input type="checkbox" value="topics" name="topics" value="domain">Domain and range</input></li>
+		<li><input type="checkbox" value="topics" name="topics" value="graphs">Graphs</input></li>
+		<li><input type="checkbox" value="topics" name="topics" value="partial">Partial equations</input></li>
+		<li><input type="checkbox" value="topics" name="topics" value="diff">Differentiation</input></li>
+		<li><input type="checkbox" value="topics" name="topics" value="integ">Integration</input></li>
+		<li><input type="checkbox" value="topics" name="topics" value="trig">Trigonometry</input></li>
+		<li><input type="checkbox" value="topics" name="topics" value="geom">Geometry</input></li>
+		</div>
+	</div>
+	<div class="comments">
+	<label id="comments">Any further comments?</label>
+		<textarea rows="4" cols="40">
+		</textarea>
+	</div>
+	<div class="footnote">* = required info</div>
+	<div class="submit"><input type="submit" id="submit"></input></div>
+</form>
+</div>
+</div>
+</body>
+
+</html>
