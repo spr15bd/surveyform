@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<style>
+  
+	.content {
+  		background-color: rgb(200,100,130);
+	}
+	#title {
+  		font-family: "Times New Roman";
+  		padding-top:3%;
+  		padding-bottom: 0;
+  		font-size: 40px;
+  		color:rgb(100,0,0);
+	}
+	#cent {
+  		margin-left:20%;
+  		margin-right:20%;
+  		margin-top:3%;
+  		margin-bottom:3%;
+  		padding-top: 3%;
+  		padding-left: 5%;
+  		padding-bottom: 2%;
+  		padding-right: 5%;
+  		background-color: rgb(220,140,180);
+	}
+	.btn-default {
+  		font-size: 14px;
+  		padding-left: 10px;
+  		padding-right: 10px;
+  		color: white;
+  		background-color:rgb(200,100,130);
+  		border:none;
+	}
+	#quote-box {
+  		font-family: "Times New Roman";
+  		font-size: 20px;
+  		color: rgb(100,0,0);
+  		padding-bottom:2%;
+  		height: 200px;
+  		position:relative;
+	}
+	#author {
+  		font-family: "Times New Roman";
+  		font-style: italic;
+  		font-size: 32px;
+  		padding-top:2%;
+  		padding-bottom:2%;
+  		color:white;
+	}
+
+	#buttondiv {
+  		position: absolute;
+  		bottom: 0px;
+  		left:43%;
+	}
+
+	#built-by {
+  		font-family: "Times New Roman";
+  		padding-bottom:1%;
+  		font-size: 18px;
+	}	
+</style>
+
+<html>
+<head>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+	<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+	<script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+	<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+	
+	
+</head>
+
+<body>
+	<div id="root">
+
+	</div>
+	<script type='text/babel'>
+
+	class Buttons extends React.Component {
+  		constructor(props) {
+    			super(props);
+  		}
+  		render() {
+    			return(<div id="buttondiv">
+          				<button className="btn btn-default" id="new-quote" onClick={this.props.getQuote}>
+						<i className="fa fa-quote-left"></i>....<i className="fa fa-quote-right"></i>
+          				</button>
+          				<button className="btn btn-default">
+            					<a id="tweet-quote" href='https://twitter.com/intent/tweet' onClick={this.props.sendATweet} target="_blank">
+              						<i className="fab fa-twitter"></i>
+            					</a>
+          				</button>
+        			</div>
+			);
+  		}
+	}
+  
+	class Quote extends React.Component {
+  		constructor(props) {
+    			super(props);
+  		}
+  		
+		render() {
+    			return(
+      				<div id="text">
+					<i className="fa fa-quote-left"></i>
+					{this.props.text}
+					<i className="fa fa-quote-right"></i>
+      				</div>
+    			);
+  		}
+	}
+
+	class Author extends React.Component {
+  		constructor(props) {
+    			super(props);
+  		}
+  
+  		render() {
+    			return(
+      				<div id="author">
+        			{this.props.author}
+      				</div>
+    			);
+  		}
+	}
+
+	class Main extends React.Component {
+  		constructor(props) {
+    			super(props);
+    			this.state={
+      				currentQuote:"The foolish man seeks happiness in the distance. The wise grows it under his feet.",
+      				currentAuthor:"- James Oppenheim"
+    			};
+			this.message="";
+    			this.sendATweet=this.sendATweet.bind(this);
+    			this.getQuote=this.getQuote.bind(this);
+  		}
+  
+  		sendATweet() {
+    			this.message = "\""+this.state.currentQuote+"\""+"......."+this.state.currentAuthor;
+    			window.open("https://twitter.com/intent/tweet?hashtags= freecodecamp&text="+encodeURIComponent(this.message));
+  		}
+  
+  		getQuote() {
+    			$.ajax({
+      				url: "https://api.forismatic.com/api/1.0/",
+      				jsonp: "jsonp",
+      				dataType: "jsonp",
+      				data: {
+        				method: "getQuote",
+        				lang: "en",
+        				format: "jsonp"
+      				}
+   			})
+   			.done((quoteData)=> {
+      				if (quoteData.quoteAuthor=="") {
+        			quoteData.quoteAuthor="Anonymous";
+      			}
+      			$("#text").fadeOut(1500);
+      			$("#author").fadeOut(1500); 
+      			setTimeout(() =>{
+        			this.setState({
+          				currentQuote: quoteData.quoteText,
+          				currentAuthor: quoteData.quoteAuthor
+        			});
+        			$("#text").fadeIn(1500);
+        			$("#author").fadeIn(1500);
+      			},1800);
+   			})
+   			.fail(function(err) {
+     				console.log("Error: " + err.status);
+   			});
+  		}
+  
+  		render() {
+    			return(
+      				<div className="content">
+  					<div id="title" className="text-center">
+						Random Quote Generator
+    						<div id="cent">
+      							<div className="text-center" id="quote-box">
+        							<Quote text={this.state.currentQuote}/>
+        							<Author author={this.state.currentAuthor}/>
+        							<Buttons getQuote={this.getQuote} sendATweet={this.sendATweet}/>
+      							</div>
+    						</div>
+  					</div>
+  					<div id="built-by" className="text-center">
+					Built by Bevan Dady
+					</div>
+				</div>
+    			);
+  		}
+	}
+
+	ReactDOM.render (
+  		<Main />, 
+  		document.getElementById('root')
+	);
+	</script>
+</body>
+
+</html>
